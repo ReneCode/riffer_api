@@ -1,0 +1,4 @@
+node_modules
+try/
+npm-debug.log
+config/
