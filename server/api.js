@@ -46,9 +46,8 @@ module.exports = function(wagner) {
  		return function(req, res) {
  			skip = req.query.skip || 0;
  			limit = req.query.limit || 50;
- 			
- 			Riff.find().sort('date').skip(skip).limit(limit).exec(function(err, data) {
- 				res.json(data);
+ 			Riff.find().sort('-date').skip(skip).limit(limit).exec(function(err, data) {
+ 				res.json(data.reverse());
  			});
  		};
  	}));
