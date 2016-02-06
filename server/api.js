@@ -42,11 +42,20 @@ module.exports = function(wagner) {
 	}));
 
 	// query riffs - get multiple riffs
+	// parameter:
+	//		skip
+	//		limit
+	//		newerthan
  	api.get('/riff', wagner.invoke(function(Riff) {
  		return function(req, res) {
- 			skip = req.query.skip || 0;
- 			limit = req.query.limit || 50;
- 			Riff.find().sort('-date').skip(skip).limit(limit).exec(function(err, data) {
+ 			var skip = req.query.skip || 0;
+ 			var limit = req.query.limit || 50;
+ 			var newerthan = req.query.newerthan;
+ 			var filter = {};
+ 			if (newerthan) {
+ 				filter = { date: {$gt: newerthan}}
+ 			}
+ 			Riff.find(filter).sort('-date').skip(skip).limit(limit).exec(function(err, data) {
  				res.json(data.reverse());
  			});
  		};

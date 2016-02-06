@@ -120,7 +120,41 @@ describe('REST Server', function() {
 		});
 	});
 
+	it('get all riffs newerthan a given date', function(done) {
+		var p1 = { userid: 'a', date:new Date(2016,1,24), data:{len:44}};
+		var p2 = { userid: 'b', date:new Date(2016,1,22), data:{len:55}};
+		var p3 = { userid: 'c', date:new Date(2016,1,23), data:{len:66}};
+		var p4 = { userid: 'd', date:new Date(2016,1,21), data:{len:77}};
 
+		RiffModel.create([p1,p2,p3,p4], function(err, newriffs) {
+
+			var url = URL_ROOT + '/api/v1/riff';
+			superagent.get(url, function(err, res) {
+				expect(res.body.length).toBe(4); 
+				var riff = res.body.filter( function(r) { return r.userid == 'b'} );
+				// should get p2
+				expect(riff[0].userid == 'b');
+				var dt = riff[0].date;	
+				superagent.get(url)
+							.query({newerthan:dt})
+							.end(function(err, res) {
+					expect(res.body.length).toBe(2);
+					expect(res.body[0].userid).toBe('c');
+					expect(res.body[1].userid).toBe('a');
+					done();
+				});
+			});
+		});
+	});
+
+
+
+	it('clear database', function(done) {
+		done();
+	});
+
+
+/////////////////////////////////
 	
 	xit('get filted riff data / REST: GET', function(done) {
 		var p1 = { riffnr: 'ab7-riff', manufacturer:'m13'};
