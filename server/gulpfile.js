@@ -22,6 +22,6 @@ gulp.task('test', function() {
 
 gulp.task('watch', ['test'], function() {
 	watching = true;
-	gulp.watch(['./test/*.js', './*.js'], ['test']);
+	gulp.watch(['./test/*.js', './**/*.js'], ['test']);
 });
 

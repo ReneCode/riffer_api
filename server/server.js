@@ -20,6 +20,9 @@ module.exports = function() {
  		res.send("Welcome to riffer. This is the API layer.");
 	});
 
+	process.on('exit', function() {
+		console.log("ENDE !!");
+	})
 
 	return app;
 };
